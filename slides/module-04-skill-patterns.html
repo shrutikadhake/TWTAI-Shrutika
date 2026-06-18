@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module 4 Slides: Skill Patterns | Tech Writer's Tribe</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --ink: #1a2332;
+      --muted: #5a6a7e;
+      --accent: #1a56db;
+      --accent-light: #ebf5ff;
+      --accent-2: #0e9f6e;
+      --line: #e2e8f0;
+      --shadow: 0 4px 24px rgba(26, 35, 50, 0.10);
+      --shadow-lg: 0 8px 40px rgba(26, 35, 50, 0.16);
+      --level-bg: #fff8e1;
+      --level-text: #f57f17;
+      --level-border: #ffd54f;
+      --code-bg: #1e293b;
+      --code-text: #e2e8f0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", "Segoe UI", -apple-system, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(135deg, #f0f4ff 0%, #f5f7fa 50%, #eef7f4 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Header bar ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+
+    .header-title {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--level-bg);
+      color: var(--level-text);
+      border: 1px solid var(--level-border);
+    }
+
+    /* ── Slide stage ── */
+    .stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.5rem;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: min(1100px, 96vw);
+      height: min(660px, calc(100vh - 130px));
+      background: var(--panel);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem 2.5rem 1.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide.active { display: flex; }
+
+    /* Decorative accent circle */
+    .slide::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      right: -180px;
+      top: -180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,86,219,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .slide-number {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── Slide body typography ── */
+    .slide-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .slide-body::-webkit-scrollbar { width: 4px; }
+    .slide-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    .slide-body h1 {
+      font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.1rem;
+    }
+
+    .slide-body h2 {
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0.5rem;
+    }
+
+    .slide-body h3 {
+      font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .slide-body h4 {
+      font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+      font-weight: 600;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.5rem;
+    }
+
+    .slide-body p {
+      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .slide-body strong { color: var(--ink); }
+
+    .slide-body blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 0.7rem 1rem;
+      background: var(--accent-light);
+      border-radius: 0 10px 10px 0;
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-style: italic;
+      color: var(--ink);
+      margin: 0.3rem 0;
+    }
+
+    .slide-body ul,
+    .slide-body ol {
+      padding-left: 1.4rem;
+      font-size: clamp(0.92rem, 1.35vw, 1.08rem);
+      line-height: 1.5;
+    }
+
+    .slide-body li { margin: 0.3rem 0; }
+
+    .slide-body ul.checklist { list-style: none; padding-left: 0.2rem; }
+    .slide-body ul.checklist li { display: flex; align-items: flex-start; gap: 0.5rem; }
+    .slide-body ul.checklist input { margin-top: 0.2rem; accent-color: var(--accent-2); }
+
+    .slide-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.8rem, 1.15vw, 0.96rem);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .slide-body th {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 700;
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .slide-body td {
+      padding: 0.45rem 0.7rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    .slide-body tr:last-child td { border-bottom: none; }
+    .slide-body tr:nth-child(even) td { background: #f8fafc; }
+
+    .slide-body code {
+      background: #f1f5f9;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
+      font-size: 0.9em;
+      color: #c7254e;
+      border: 1px solid #e2e8f0;
+    }
+
+    .slide-body pre.code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
+      font-size: clamp(0.75rem, 1.05vw, 0.9rem);
+      line-height: 1.55;
+      overflow-x: auto;
+      margin: 0.3rem 0;
+      flex-shrink: 0;
+    }
+
+    .slide-body pre.code-block code {
+      background: none;
+      border: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--panel);
+      border-top: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover { background: #1447b5; border-color: #1447b5; color: #fff; }
+
+    .progress-wrap {
+      flex: 1;
+      max-width: 400px;
+      background: var(--line);
+      border-radius: 999px;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .slide-counter {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* ── Keyboard hint ── */
+    .kbd-hint {
+      font-size: 0.73rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.05em 0.35em;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.85em;
+    }
+
+    /* ── Speaker notes overlay ── */
+    .notes-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 100;
+      align-items: flex-end;
+      padding: 2rem;
+    }
+
+    .notes-overlay.visible { display: flex; }
+
+    .notes-panel {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-height: 50vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .notes-panel h4 { color: var(--accent); margin-bottom: 0.5rem; }
+    .notes-panel p { font-size: 0.92rem; line-height: 1.55; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .slide { padding: 1.2rem 1.1rem; border-radius: 14px; }
+      .slide-body h1 { font-size: 1.4rem; }
+      .header-title { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <span class="brand">TWT</span>
+      <span class="header-title">Module 4 Slides: Skill Patterns</span>
+    </div>
+    <div class="level-badge">🟡 Intermediate</div>
+  </header>
+
+  <main class="stage" id="stage">
+    <section class="slide" id="slide-1">
+      <div class="slide-number">1 / 13</div>
+      <div class="slide-body"><h1>Skill Patterns</h1>
+<h3>Templates for Every Documentation Task</h3>
+<h4>Module 4 of 8 | 🟡 Intermediate Level</h4>
+<p><strong>Tech Writer's Tribe</strong></p>
+<p>AI-Powered Documentation Mastery</p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-2">
+      <div class="slide-number">2 / 13</div>
+      <div class="slide-body"><h1>Quick Recap: Module 3</h1>
+<ul>
+<li>The RTCCO framework: Role, Task, Context, Constraints, Output</li>
+<li>A skill = markdown file in <code>.claude/commands/</code></li>
+<li><code>$ARGUMENTS</code> = what makes a skill reusable</li>
+<li>You built your first working skill</li>
+</ul>
+<blockquote>"Show us your skill! What task does it automate?</blockquote>
+<blockquote>How did the output look?"</blockquote>
+</div>
+    </section>
+
+    <section class="slide" id="slide-3">
+      <div class="slide-number">3 / 13</div>
+      <div class="slide-body"><h1>Why Patterns?</h1>
+<p>Writing every skill from scratch = reinventing the wheel.</p>
+<p>Learning the <strong>four patterns</strong> gives you a template for almost any documentation task you'll ever face.</p>
+<p><strong>Experienced practitioners recognize patterns.</strong></p>
+<p><strong>This module is where you become one.</strong></p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-4">
+      <div class="slide-number">4 / 13</div>
+      <div class="slide-body"><h1>The Four Skill Patterns</h1>
+<table>
+<thead><tr><th>Pattern</th><th>Purpose</th><th>Key Question</th></tr></thead>
+<tbody>
+<tr><td><strong>Reviewer</strong></td><td>Check content against criteria</td><td>"Does this meet the standard?"</td></tr>
+<tr><td><strong>Generator</strong></td><td>Create new content from source</td><td>"Make this exist."</td></tr>
+<tr><td><strong>Transformer</strong></td><td>Convert form or style</td><td>"Keep substance, change expression."</td></tr>
+<tr><td><strong>Analyzer</strong></td><td>Extract insights from content</td><td>"What's in here? What's missing?"</td></tr>
+</tbody></table>
+</div>
+    </section>
+
+    <section class="slide" id="slide-5">
+      <div class="slide-number">5 / 13</div>
+      <div class="slide-body"><h1>Pattern 1: The Reviewer</h1>
+<p><strong>Purpose:</strong> Check content against criteria and report findings.</p>
+<pre class="code-block"><code>You are a [ROLE] reviewing [TARGET] for [PURPOSE].
+Review: $ARGUMENTS
+
+## Checklist
+1. [Criterion] — [what PASS looks like]
+2. [Criterion] — [what PASS looks like]
+
+## Output
+| Criterion | Status | Finding | Action |
+Status: ✅ PASS | ⚠️ NEEDS WORK | ❌ MISSING
+
+## Summary
+Score: X/Y | Top 3 improvements by impact</code></pre>
+<p><strong>Examples:</strong> <code>/check-api-doc</code>, <code>/check-readme</code>, <code>/term-audit</code></p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-6">
+      <div class="slide-number">6 / 13</div>
+      <div class="slide-body"><h1>Pattern 2: The Generator</h1>
+<p><strong>Purpose:</strong> Create new content from source material.</p>
+<pre class="code-block"><code>Read the source material at $ARGUMENTS and generate [OUTPUT TYPE].
+
+## Rules
+- [What must be included]
+- [What must be excluded]
+- [Formatting rule]
+
+## Output
+Output ONLY the [content type].
+No preamble. No commentary. Begin with the first line of content.</code></pre>
+<p><strong>Examples:</strong> <code>/release-notes</code>, <code>/scaffold-api-doc</code>, <code>/build-glossary</code></p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-7">
+      <div class="slide-number">7 / 13</div>
+      <div class="slide-body"><h1>Pattern 3: The Transformer</h1>
+<p><strong>Purpose:</strong> Convert content from one format or style to another.</p>
+<pre class="code-block"><code>Transform the content at $ARGUMENTS.
+
+## From: [current format/style/level]
+## To:   [target format/style/level]
+
+## Preserve (do NOT change)
+- Code samples, proper nouns, product names
+
+## Change
+- [What must be transformed]
+- [Style rules to apply]
+
+## Output
+The transformed content only. No markup showing changes.</code></pre>
+<p><strong>Examples:</strong> <code>/active-voice</code>, <code>/to-reference</code>, <code>/simplify</code></p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-8">
+      <div class="slide-number">8 / 13</div>
+      <div class="slide-body"><h1>Pattern 4: The Analyzer</h1>
+<p><strong>Purpose:</strong> Extract insights, patterns, or gaps from raw material.</p>
+<pre class="code-block"><code>Analyze the content at $ARGUMENTS for [ANALYSIS PURPOSE].
+
+## What to Analyze
+- [Dimension 1]
+- [Dimension 2]
+
+## Output
+[SECTION 1: Summary Statistics]
+[SECTION 2: Detailed Findings]
+[SECTION 3: Priority Recommendations — each starts with a verb]</code></pre>
+<p><strong>Examples:</strong> <code>/doc-coverage</code>, <code>/jargon-audit</code>, <code>/naming-audit</code></p>
+</div>
+    </section>
+
+    <section class="slide" id="slide-9">
+      <div class="slide-number">9 / 13</div>
+      <div class="slide-body"><h1>Which Pattern Do I Use?</h1>
+<pre class="code-block"><code>What is your primary goal?
+│
+├── Evaluate existing content ─────────→ REVIEWER
+│     "Does this meet the standard?"
+│
+├── Create new content ─────────────→ GENERATOR
+│     "Make this exist."
+│
+├── Change the form of content ─────→ TRANSFORMER
+│     "Same substance, different form."
+│
+└── Extract information ────────────→ ANALYZER
+      "Tell me what's in here / missing."</code></pre>
+</div>
+    </section>
+
+    <section class="slide" id="slide-10">
+      <div class="slide-number">10 / 13</div>
+      <div class="slide-body"><h1>Workshop: Build One of Each</h1>
+<p>Work individually or in pairs.</p>
+<p><strong>Assignments (choose or assign):</strong></p>
+<ul>
+<li><code>/check-style</code> → Reviewer pattern</li>
+<li><code>/release-notes</code> → Generator pattern</li>
+<li><code>/simplify-prose</code> → Transformer pattern</li>
+<li><code>/doc-coverage</code> → Analyzer pattern</li>
+</ul>
+<p><strong>For each skill:</strong></p>
+<ol>
+<li>Pick the right pattern template</li>
+<li>Fill in YOUR Role, Context, Checklist/Rules, Constraints, Output</li>
+<li>Test on a sample document</li>
+<li>Note one thing you'd improve</li>
+</ol>
+</div>
+    </section>
+
+    <section class="slide" id="slide-11">
+      <div class="slide-number">11 / 13</div>
+      <div class="slide-body"><h1>Discussion</h1>
+<ol>
+<li>Which pattern covers the most tasks in your daily work?</li>
+</ol>
+<ol>
+<li>Can you think of a task that doesn't fit any of the four patterns?</li>
+</ol>
+<ol>
+<li>What's the risk of using a Generator pattern without a human review step?</li>
+</ol>
+</div>
+    </section>
+
+    <section class="slide" id="slide-12">
+      <div class="slide-number">12 / 13</div>
+      <div class="slide-body"><h1>Before Module 5</h1>
+<ol>
+<li><strong>Build</strong> a <code>/doc-coverage</code> skill using the <strong>Analyzer</strong> pattern</li>
+<li><strong>Build</strong> one custom skill using any pattern — specific to your workflow</li>
+<li><strong>Read</strong> <code>resources/peer-review-rubric.md</code> — you'll use it next session</li>
+</ol>
+</div>
+    </section>
+
+    <section class="slide" id="slide-13">
+      <div class="slide-number">13 / 13</div>
+      <div class="slide-body"><h1>🟡 Intermediate Checkpoint: Module 4</h1>
+<ul class="checklist">
+<li><input type="checkbox"  disabled> Name the 4 patterns from memory</li>
+<li><input type="checkbox"  disabled> Match a task to its correct pattern without the decision tree</li>
+<li><input type="checkbox"  disabled> Build a Reviewer skill with a complete, scored checklist</li>
+<li><input type="checkbox"  disabled> Build a Generator that produces clean output with no preamble</li>
+<li><input type="checkbox"  disabled> Explain when Transformer ≠ Generator</li>
+<li><input type="checkbox"  disabled> Apply the Analyzer pattern to surface undocumented gaps</li>
+</ul>
+<p><strong>Next: Module 5 — Advanced Skills & Team Workflows →</strong></p>
+</div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="btn" id="btn-prev" onclick="prevSlide()" disabled>&#8592; Prev</button>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progress-bar" style="width: 7.7%"></div>
+    </div>
+    <span class="slide-counter" id="counter">1 / 13</span>
+    <button class="btn btn-primary" id="btn-next" onclick="nextSlide()">Next &#8594;</button>
+    <span class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> navigate</span>
+  </footer>
+
+  <script>
+    let current = 0;
+    const total = 13;
+    const slides = document.querySelectorAll('.slide');
+
+    function show(n) {
+      slides.forEach(s => s.classList.remove('active'));
+      slides[n].classList.add('active');
+      current = n;
+      document.getElementById('counter').textContent = (n + 1) + ' / ' + total;
+      document.getElementById('progress-bar').style.width = ((n + 1) / total * 100).toFixed(1) + '%';
+      document.getElementById('btn-prev').disabled = n === 0;
+      document.getElementById('btn-next').disabled = n === total - 1;
+      document.getElementById('btn-next').textContent = n === total - 1 ? 'End ✓' : 'Next →';
+    }
+
+    function nextSlide() { if (current < total - 1) show(current + 1); }
+    function prevSlide() { if (current > 0) show(current - 1); }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+      if (e.key === 'Home') { e.preventDefault(); show(0); }
+      if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+    });
+
+    show(0);
+  </script>
+</body>
+</html>
