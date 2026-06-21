@@ -164,17 +164,3 @@ The project owner is responsible for repository hygiene: clear folder structure,
 | Release Notes | Riffat | 1. Riffat<br>2. Samyak Mukherjee<br>3. Dhannya Nair<br>4. Anubhav Chaudhary<br>5. Dimple Mittal<br>6. Srividya Kannan<br>7. Div<br>8. Shubh Karman<br>9. Bhargavi<br>10. Vasavi |
 | Document Intelligence Platform - Converter & Rebranding | To be confirmed | 1. Owner<br>2. Riffat Wyne<br>3. Anubhav<br>4. Anshita<br>5.<br>6.<br>7.<br>8.<br>9.<br>10. |
 | Document Intelligence Platform - Draft Generator & Automated Pre-Review | To be confirmed | 1. Owner<br>2.<br>3.<br>4.<br>5.<br>6.<br>7.<br>8.<br>9.<br>10. |
-
-## Appendix B: Suggested Message to Share With the Group
-
-**Suggested group message:**
-
-> Team, to keep the work focused and manageable, we will proceed with three project tracks only:
->
-> 1. Release Notes - Owner: Riffat
-> 2. Document Intelligence Platform - Converter & Rebranding - Samyak
-> 3. Document Intelligence Platform - Draft Generator & Automated Pre-Review - Shrutika
->
-> Each team will have one owner and 9-10 members including the owner. Please sign up for only one project. Once a project reaches 10 people, additional volunteers will be redirected to another track.
->
-> Meetings, if required, will be scheduled only as agreed by the owner and team members.
